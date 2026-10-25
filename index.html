@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VEXO Casino</title>
+<style>
+body{margin:0;background:#0b0b0b;color:#f5c542;font-family:Arial,sans-serif;text-align:center;padding:20px}
+h1{font-size:38px;letter-spacing:5px}
+.card{background:#181818;border:1px solid #b88a20;border-radius:18px;padding:20px;margin:18px auto;max-width:360px}
+button{background:#f5c542;color:#111;border:0;border-radius:12px;padding:14px 20px;font-size:17px;font-weight:bold;margin:8px}
+#result{font-size:35px;margin:20px}
+</style>
+</head>
+<body>
+<h1>VEXO</h1>
+<p>VIRTUAL CASINO</p>
+<div class="card">
+<h2>ТВОЙ БАЛАНС</h2>
+<h2>🪙 <span id="coins">1000</span></h2>
+<button onclick="bonus()">🎁 Ежедневный бонус</button>
+</div>
+<div class="card">
+<h2>🎰 СЛОТЫ</h2>
+<div id="result">🍒 🍋 🍇</div>
+<button onclick="spin()">КРУТИТЬ</button>
+<p id="message">Испытай удачу!</p>
+</div>
+<script>
+let coins=1000;
+function spin(){
+if(coins<50){document.getElementById('message').textContent='Недостаточно монет!';return;}
+coins-=50;
+let a=['🍒','🍋','🍇','💎','⭐'];
+let r=Array.from({length:3},()=>a[Math.floor(Math.random()*a.length)]);
+document.getElementById('result').textContent=r.join(' ');
+if(r[0]===r[1]&&r[1]===r[2]){coins+=300;document.getElementById('message').textContent='ДЖЕКПОТ! +300 монет';}
+else document.getElementById('message').textContent='Попробуй ещё раз!';
+update();
+}
+function bonus(){
+let last=localStorage.getItem('vexoBonus');
+let today=new Date().toDateString();
+if(last===today){document.getElementById('message').textContent='Бонус уже получен сегодня!';return;}
+coins+=200;localStorage.setItem('vexoBonus',today);
+document.getElementById('message').textContent='+200 монет за вход!';
+update();
+}
+function update(){document.getElementById('coins').textContent=coins;localStorage.setItem('vexoCoins',coins);}
+coins=Number(localStorage.getItem('vexoCoins'))||1000;
+update();
+</script>
+</body>
+</html>
